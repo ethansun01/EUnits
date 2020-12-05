@@ -19,14 +19,16 @@ Features to add:
 * Getting started
 ** Installation
 The easiest installation method is via PyPI: https://pypi.org/project/EUnits/
-#+begin_src python
+#+begin_src sh :exports both
 pip install EUnits
 #+end_src
+
+#+RESULTS:
 
 The upstream is on github: https://github.com/ethansun01/EUnits
 
 ** Defining Quantities
-#+begin_src jupyter-python :session py
+#+begin_src jupyter-python :session py :exports both
 import eunits
 length = eunits.Quantity(10,'km')
 print(length)
@@ -37,7 +39,7 @@ print(length)
 
 * Features and Operations
 ** Unit Conversions
-#+begin_src jupyter-python :session py
+#+begin_src jupyter-python :session py :exports both
 print(length.in_units('cm'))
 
 # You can also get a Quantitiy in its SI base units
@@ -49,7 +51,7 @@ print(length.as_base())
 : 10000.0 m 
 
 ** Adding and Subtracting Quantities
-#+begin_src jupyter-python :session py
+#+begin_src jupyter-python :session py :exports both
 print(length + eunits.Quantity(500,'m'))
 print(length - eunits.Quantity(500,'m'))
 
@@ -68,7 +70,7 @@ print(length)
 : 10.0 km
 
 ** Multiplying and Dividing Quantities
-#+begin_src jupyter-python :session py
+#+begin_src jupyter-python :session py :exports both
 area = length * length
 print(area)
 
@@ -86,7 +88,7 @@ print(speed)
 : 5.555555555555555 m s^-1
 
 We can also round Quantities:
-#+begin_src jupyter-python :session py
+#+begin_src jupyter-python :session py :exports both
 print(round(speed,2))
 #+end_src
 
@@ -94,7 +96,7 @@ print(round(speed,2))
 : 5.56 m s^-1
 
 We can also multiply by scalars or have negative Quantities:
-#+begin_src jupyter-python :session py
+#+begin_src jupyter-python :session py :exports both
 high_speed = speed * 5
 print(round(high_speed,2))
 
@@ -110,7 +112,7 @@ The following operators are also supported:
 | % | Modulo          |
 | \\| Integer Division|
 ** Exponents
-#+begin_src jupyter-python :session py
+#+begin_src jupyter-python :session py :exports both
 radius = eunits.Quantity(2,'mm')
 area = 4 * 3.14 * radius**2
 volume = 4/3 * 3.14 * radius ** 3
@@ -123,7 +125,7 @@ print('Volume:',round(volume,2))
 : Area: 50.24 mm^2 
 : Volume: 33.49 mm^3 
 Exponentiating a Quantity is not defined, unless the Quantity is dimensionless:
-#+begin_src jupyter-python :session py
+#+begin_src jupyter-python :session py :exports both
 density = eunits.Quantity(1.1, 'g cm^-3')
 velocity = eunits.Quantity(0.5, 'mm s^-1')
 diameter = eunits.Quantity(0.25, 'm')
@@ -152,7 +154,7 @@ Comparing units with the following operators is supported:
 | <= | less than or equal to    |
 | >= | greater than or equal to |
 
-#+begin_src jupyter-python :session py
+#+begin_src jupyter-python :session py :exports both
 a = eunits.Quantity(5,'m')
 b = eunits.Quantity(55,'mm')
 if a > b:
@@ -164,7 +166,7 @@ if a > b:
 
 * Using with other packages
 ** numpy
-#+begin_src jupyter-python :session python
+#+begin_src jupyter-python :session python :exports both
 import numpy as np
 from eunits import Quantity as q
 
@@ -177,7 +179,7 @@ print(distance)
 : 6.164414002968976 m 
 
 ** matplotlib
-#+begin_src jupyter-python :session python
+#+begin_src jupyter-python :session python :exports both
 import matplotlib.pyplot as plt
 
 launch_angles = np.linspace(np.pi/4,np.pi/2, 5) #radians
