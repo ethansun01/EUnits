@@ -1,4 +1,7 @@
+#+BEGIN_OPTIONS
 #+PROPERTY: header-args :exports both
+#+END_OPTIONS
+
 
 EUnits: A simple unit-enabled object class for Python
 * About
