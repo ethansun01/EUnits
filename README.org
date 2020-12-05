@@ -11,9 +11,9 @@ Features to add:
 
 * Getting started
 ** Installation
-The easiest installation method is via testPyPI: https://test.pypi.org/project/EUnits/
+The easiest installation method is via PyPI: https://pypi.org/project/EUnits/
 #+begin_src python
-pip install -i https://test.pypi.org/simple/EUnits
+pip install EUnits
 #+end_src
 
 The upstream is on github: https://github.com/ethansun01/EUnits
