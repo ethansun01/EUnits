@@ -1,0 +1,4 @@
+from eunits import Quantity as q
+
+length = q(4,'m')
+print(length**2)

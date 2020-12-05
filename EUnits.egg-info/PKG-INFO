@@ -1,0 +1,14 @@
+Metadata-Version: 1.2
+Name: EUnits
+Version: 0.0.2
+Summary: A simple units package
+Home-page: UNKNOWN
+Author: Ethan Sunshine
+Author-email: author@example.com
+License: UNKNOWN
+Description: This python package adds a single class, the Quantity. It is meant to help you keep track of units when doing physical/scientific/engineering calculations.
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6

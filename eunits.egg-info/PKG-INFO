@@ -1,0 +1,215 @@
+Metadata-Version: 2.1
+Name: eunits
+Version: 0.0.1
+Summary: A simple units package
+Home-page: UNKNOWN
+Author: Ethan Sunshine
+Author-email: author@example.com
+License: UNKNOWN
+Description: EUnits: A simple unit-enabled object class for Python
+        * About
+        This python package adds a single class, the Quantity. It is meant to help you keep track of units when doing physical/scientific/engineering calculations.
+        
+        Features to add:
+        - imperial units
+        - better numpy and matplotlib integration
+          - logarithms
+          - better numpy array integration
+          - LaTeX-enabled printing in matplotlib
+        
+        * Getting started
+        ** Installation
+        ** Defining Quantities
+        #+begin_src jupyter-python :session py
+        import eunits
+        length = eunits.Quantity(10,'km')
+        print(length)
+        #+end_src
+        
+        #+RESULTS:
+        : 10 km
+        
+        * Features and Operations
+        ** Unit Conversions
+        #+begin_src jupyter-python :session py
+        print(length.in_units('cm'))
+        
+        # You can also get a Quantitiy in its SI base units
+        print(length.as_base())
+        #+end_src
+        
+        #+RESULTS:
+        : 1000000.0 cm
+        : 10000.0 m 
+        
+        ** Adding and Subtracting Quantities
+        #+begin_src jupyter-python :session py
+        print(length + eunits.Quantity(500,'m'))
+        print(length - eunits.Quantity(500,'m'))
+        
+        # The += and -= operators are supported
+        length += eunits.Quantity(2,'km')
+        print(length)
+        
+        length -= eunits.Quantity(2,'km')
+        print(length)
+        #+end_src
+        
+        #+RESULTS:
+        : 10.5 km
+        : 9.5 km
+        : 12.0 km
+        : 10.0 km
+        
+        ** Multiplying and Dividing Quantities
+        #+begin_src jupyter-python :session py
+        area = length * length
+        print(area)
+        
+        time = eunits.Quantity(0.5,'h')
+        speed = length / time
+        print(speed)
+        
+        speed = speed.in_units('m s^-1')
+        print(speed)
+        #+end_src
+        
+        #+RESULTS:
+        : 100.0 km^2 
+        : 20.0 km h^-1 
+        : 5.555555555555555 m s^-1
+        
+        We can also round Quantities:
+        #+begin_src jupyter-python :session py
+        print(round(speed,2))
+        #+end_src
+        
+        #+RESULTS:
+        : 5.56 m s^-1
+        
+        We can also multiply by scalars or have negative Quantities:
+        #+begin_src jupyter-python :session py
+        high_speed = speed * 5
+        print(round(high_speed,2))
+        
+        backward_speed = -speed
+        print(round(backward_speed,2))
+        #+end_src
+        
+        #+RESULTS:
+        : 27.78 m s^-1
+        : -5.56 m s^-1
+        
+        The following operators are also supported:
+        | % | Modulo          |
+        | \\| Integer Division|
+        ** Exponention
+        #+begin_src jupyter-python :session py
+        radius = eunits.Quantity(2,'mm')
+        area = 4 * 3.14 * radius**2
+        volume = 4/3 * 3.14 * radius ** 3
+        
+        print('Area:',round(area,2))
+        print('Volume:',round(volume,2))
+        #+end_src
+        
+        #+RESULTS:
+        : Area: 50.24 mm^2 
+        : Volume: 33.49 mm^3 
+        
+        ** Exponentiation
+        Exponentiating a Quantity is not defined, unless the Quantity is dimensionless:
+        #+begin_src jupyter-python :session py
+        density = eunits.Quantity(1.1, 'g cm^-3')
+        velocity = eunits.Quantity(0.5, 'mm s^-1')
+        diameter = eunits.Quantity(0.25, 'm')
+        viscosity = eunits.Quantity(3,'cP')
+        
+        Re = density * velocity * diameter / viscosity
+        print(round(Re,3))
+        print(Re.as_base())
+        
+        # EUnits automatically uses the dimensionless Quantity, even if not specified
+        print(1.1**Re)
+        
+        #+end_src
+        
+        #+RESULTS:
+        : 0.046 m s^-1 g mm cm^-3 cP^-1 
+        : 45.833333333333336 
+        : 78.91594044991709
+        
+        ** Comparison
+        Comparing units with the following operators is supported:
+        | <  | less than                |
+        | >  | greater than             |
+        | == | equal to                 |
+        | != | not equal to             |
+        | <= | less than or equal to    |
+        | >= | greater than or equal to |
+        
+        #+begin_src jupyter-python :session py
+        a = eunits.Quantity(5,'m')
+        b = eunits.Quantity(55,'mm')
+        if a > b:
+            print(a,'>',b)
+        #+end_src
+        
+        #+RESULTS:
+        : 5 m > 55 mm
+        
+        * Using with other packages
+        ** numpy
+        #+begin_src jupyter-python :session python
+        import numpy as np
+        from eunits import Quantity as q
+        
+        position = np.array([q(5,'m'), q(2,'m'), q(3,'m')])
+        distance = np.linalg.norm(position,2)
+        print(distance)
+        #+end_src
+        
+        #+RESULTS:
+        : 6.164414002968976 m 
+        
+        ** matplotlib
+        #+begin_src jupyter-python :session python
+        import matplotlib.pyplot as plt
+        
+        launch_angles = np.linspace(np.pi/4,np.pi/2, 5) #radians
+        launch_speed = q(300,'cm s^-1')
+        legend = []
+        
+        for launch_angle in launch_angles:
+            horizontal_velocity = launch_speed * np.cos(launch_angle)
+            vertical_velocity_init = launch_speed * np.sin(launch_angle)
+            g = q(9.81,'m s^-2')
+            t_final = 2*vertical_velocity_init / g
+        
+            times = np.array([q(t,'s') for t in np.linspace(0,t_final.base_magnitude,100)])
+            horizontal_distances = times * horizontal_velocity
+            vertical_distances = times*vertical_velocity_init - 0.5*(times**2)*g
+        
+            distances = np.sqrt(horizontal_distances**2+vertical_distances**2)
+            distance = [a.as_base() for a in distances]
+        
+            legend.append(str(round(launch_angle,3))+' radians')
+            plt.plot(times,distance)
+        
+        plt.xlabel('Time since launch (s)')
+        plt.ylabel('Distance from origin (m)')
+        plt.legend(legend)
+        plt.title('Launch speed:'+str(launch_speed))
+        plt.show()
+        #+end_src
+        
+        #+RESULTS:
+        [[file:./.ob-jupyter/0e54588ce9804c733976f257ad37429ccf536417.png]]
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
