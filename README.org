@@ -1,3 +1,5 @@
+#+PROPERTY: header-args :exports both
+
 EUnits: A simple unit-enabled object class for Python
 * About
 This python package adds a single class, the Quantity. It is meant to help you keep track of units when doing physical/scientific/engineering calculations.
@@ -8,6 +10,8 @@ Features to add:
   - logarithms
   - better numpy array integration
   - LaTeX-enabled printing in matplotlib
+- proper error handling
+- improve speed
 
 * Getting started
 ** Installation
@@ -102,7 +106,7 @@ print(round(backward_speed,2))
 The following operators are also supported:
 | % | Modulo          |
 | \\| Integer Division|
-** Exponention
+** Exponents
 #+begin_src jupyter-python :session py
 radius = eunits.Quantity(2,'mm')
 area = 4 * 3.14 * radius**2
@@ -115,8 +119,6 @@ print('Volume:',round(volume,2))
 #+RESULTS:
 : Area: 50.24 mm^2 
 : Volume: 33.49 mm^3 
-
-** Exponentiation
 Exponentiating a Quantity is not defined, unless the Quantity is dimensionless:
 #+begin_src jupyter-python :session py
 density = eunits.Quantity(1.1, 'g cm^-3')
